@@ -74,10 +74,15 @@ if (args.length === 1 && args[0].split('.').pop() === 'txt') {
     if (data.length) {
       const items = data.split('\n');
       const output = calcBundleOrder(items);
+
+      console.log('textfile');
       console.dir(output, { depth: null });
     }
   })
 } else {
   const items = chunkArrayInTwos(args).map(v => v.join(' '));
-  console.log('item inputs from cmd', items);
+  const output = calcBundleOrder(items);
+
+  console.log('cmd args');
+  console.dir(output, { depth: null });
 }
