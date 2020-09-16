@@ -75,6 +75,25 @@ if (args.length === 1 && args[0].split('.').pop() === 'txt') {
       const items = data.split('\n');
       const output = calcBundleOrder(items);
 
+      const outputText = output.reduce((acc, val, idx) => {
+        const product = Object.keys(val).reduce((a, v) => {
+          if (v === 'bundles') {
+            const bundlesStr = val[v].map(x => {
+              const { quantity, size, price } = x;
+              return `\n    ${quantity} x ${size} ${price}`;
+            });
+
+            return `${a}${bundlesStr.toString().replace(',', '')}`;
+          }
+
+          return `${a} ${val[v]}`;
+        }, '');
+
+        return (idx > 0) ? `${acc}\n${product}` : product;
+      }, '');
+
+      fs.writeFile('output.txt', outputText, err => err && console.log(err));
+
       console.log('textfile');
       console.dir(output, { depth: null });
     }
